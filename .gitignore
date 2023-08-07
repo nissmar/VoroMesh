@@ -131,7 +131,6 @@ dmypy.json
 
 *.pt
 *.pkl
-*.png
 *.ply
 *.obj
 *.off
