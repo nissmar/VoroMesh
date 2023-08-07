@@ -149,26 +149,22 @@ int main(int argc, char *argv[])
       }
     }
   }
-
+  
   std::ofstream file;
   file.open(outputname, std::ofstream::out | std::ofstream::trunc);
-  file << "OFF" << std::endl;
-  file << current_index << " " << poly_f.size() << " 0" << std::endl;
-
   for (auto &pv : poly_v)
   {
     for (auto &p : pv)
     {
-      file << std::setprecision(20) << p << std::endl;
-      ;
+      file << "v " << std::setprecision(20) << p << std::endl;
     }
   }
   for (auto &fv : poly_f)
   {
-    file << "3 ";
+    file << "f ";
     for (auto &f : fv)
     {
-      file << f << " ";
+      file << f + 1 << " ";
     }
     file << std::endl;
   }

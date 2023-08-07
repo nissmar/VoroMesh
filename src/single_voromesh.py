@@ -1,6 +1,7 @@
 import utils.mesh_tools as mt
 import utils.custom_voronoi as cv
 import torch
+import os
 import argparse
 from time import time
 
@@ -20,8 +21,6 @@ def define_options_parser():
     parser.add_argument('shape_path', type=str, help='path to input mesh')
     parser.add_argument('--output_name', type=str,
                         default='voromesh', help='name of output mesh')
-    parser.add_argument('--export_vmesh', type=bool,
-                        default=False, help='export generators in .vmesh for precise mesh extraction')
     parser.add_argument('--grid_n', type=int,
                         default=DEFAULTS["grid_n"], help='grid_size')
     parser.add_argument('--samples_fac', type=int, default=DEFAULTS["samples_fac"],
@@ -63,11 +62,21 @@ def create_voromesh(samples, v, f, grid_n=DEFAULTS["grid_n"], lr=DEFAULTS["lr"],
 if __name__ == '__main__':
     parser = define_options_parser()
     args = parser.parse_args()
+    print("Sampling input shape...")
     v, f, samples = mt.load_and_sample_shape(
         args.shape_path, '', args.samples_fac*args.grid_n**2)
+
+    print("Optimizing VoroMesh...")
     V = create_voromesh(samples, v, f, args.grid_n, args.lr,
                         args.epochs, args.device, args.random_mask, args.lr_scheduler)
-    mt.export_obj(*V.to_mesh(), args.output_name)
-    if args.export_vmesh:
+    print("Exporting VoroMesh...")
+
+    # precise mesh extraction using CGAL
+    if os.path.isfile('src/cpp_utils/build/voromesh'):
         mt.export_vmesh(V.points.cpu().detach().numpy(),
                         V.values.cpu().detach().numpy(), args.output_name)
+        os.system(
+            'src/cpp_utils/build/voromesh {}.vmesh {}.obj'.format(args.output_name, args.output_name))
+    else:
+        print('WARNING: CGAL voromesh not found, using scipy mesh extraction with NO WATERTIGHTNESS GUARANTEES. Please compile cpp_utils.')
+        mt.export_obj(*V.to_mesh(), args.output_name)

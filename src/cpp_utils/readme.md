@@ -20,13 +20,13 @@ make
 To extract a triangle mesh from a list of generators, run: 
 
 ```
-./voromesh ../bunny64.vmesh ../bunny64.off
+./voromesh ../bunny64.vmesh ../bunny64.obj
 ```
 
 To compute the number of self-intersections, run:
 
 ```
-./self_intersect ../bunny64.off
+./self_intersect ../bunny64.obj
 ```
 
 The console should display ```0```

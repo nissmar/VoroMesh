@@ -1,6 +1,7 @@
 #include <CGAL/Exact_predicates_inexact_constructions_kernel.h>
 #include <CGAL/Surface_mesh.h>
 #include <CGAL/Polygon_mesh_processing/self_intersections.h>
+#include <CGAL/Polygon_mesh_processing/IO/polygon_mesh_io.h>
 #include <fstream>
 
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
@@ -12,10 +13,10 @@ namespace PMP = CGAL::Polygon_mesh_processing;
 int main(int argc, char *argv[])
 {
   const char *filename = (argc > 1) ? argv[1] : "data/pig.off";
-  std::ifstream input(filename);
 
   Mesh mesh;
-  if (!input || !(input >> mesh) || !CGAL::is_triangle_mesh(mesh))
+  PMP::IO::read_polygon_mesh(filename, mesh);
+  if (!CGAL::is_triangle_mesh(mesh))
   {
     std::cerr << "Not a valid input file." << std::endl;
     return 1;
