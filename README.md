@@ -5,7 +5,7 @@ PyTorch implementation of the ICCV2023 paper **VoroMesh: Learning Watertight Sur
 
 ### [Project Page](https://nissmar.github.io/voromesh.github.io/)
 
-<img src='data/banner.png' />
+<img src='banner.png' />
 
 ## Citation
 
