@@ -27,7 +27,10 @@ TODO
 
 ## Direct Optimization
 
-TODO
+python src/batch_voromesh.py
+
+python src/eval.py
+
 
 ## Learning-based reconstruction from SDF input
  

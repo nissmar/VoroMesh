@@ -10,7 +10,7 @@ def evaluate(src_dir):
     empty = 0
     watertight = 0
     num_models = 0
-    for model_name in tqdm(os.listdir(src_dir)):
+    for model_name in os.listdir(src_dir):
         if (".obj" in model_name or ".off" in model_name) and not (model_name[0] == '.' or '96481' in model_name or '58168' in model_name):
             num_models += 1
             v, f = igl.read_triangle_mesh(src_dir + model_name)
@@ -31,6 +31,7 @@ def evaluate(src_dir):
     return (wrong_geometry, wrong_topology, empty, watertight / num_models)
 
 
-print(evaluate('out/direct_voromesh_32/'))
-print(evaluate('out/direct_voromesh_64/'))
-print(evaluate('out/direct_voromesh_128/'))
+print('name, wrong geometry, wrong topology, empty models, percentage of watertight models')
+for directory in os.listdir('out'):
+    this = 'out/{}/'.format(directory)
+    print(this, evaluate(this))
