@@ -46,26 +46,31 @@ python src/eval.py
 ## Learning-based reconstruction from SDF input
 
  Training for different input SDF resolutions could be started with:
+ ```
 ./scripts/train_voromesh_32.sh
 ./scripts/train_voromesh_64.sh
 ./scripts/train_voromesh_32+64.sh
+```
 
 Shape prediction for ABC with different resolution models:
+```
 ./evaluate_voromesh_32_32_ABC.sh
 ./evaluate_voromesh_64_64_ABC.sh
 ./evaluate_voromesh_32+64_32_ABC.sh
 ./evaluate_voromesh_32+64_64_ABC.sh
+```
 
 Shape prediction for Thingi32 with different resolution models:
+```
 ./evaluate_voromesh_32_32_thingi32.sh
 ./evaluate_voromesh_32_64_thingi32.sh
 ./evaluate_voromesh_32_128_thingi32.sh
 ./evaluate_voromesh_32+64_32_thingi32.sh
 ./evaluate_voromesh_32+64_64_thingi32.sh
 ./evaluate_voromesh_32+64_128_thingi32.sh
+```
 
 ## Watertight test
-
 
 TODO
 
