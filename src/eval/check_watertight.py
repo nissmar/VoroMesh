@@ -1,7 +1,6 @@
 import os
 import igl
 import trimesh
-from tqdm import tqdm
 
 
 def evaluate(src_dir):

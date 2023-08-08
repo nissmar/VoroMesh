@@ -1,0 +1,79 @@
+### Saving config ###
+path2save: /mnt/disk1/rklokov/code/VoronoiLearning/NeuralNetworks/models/
+model_name: SDFEnc_ME_32g_256l_VCDec_0c_256l_0g_1vgpp.pkl
+path2samples: /mnt/disk1/rklokov/code/VoronoiLearning/NeuralNetworks/samples/local_Thingi32_32_32
+
+### Dataset config ###
+tr_obj_dir: /mnt/disk1/rklokov/thingi32/obj
+tr_surf_dir: /mnt/disk1/rklokov/thingi32/surf
+tr_sdf_dir: /mnt/disk1/rklokov/thingi32/sdf
+tr_vgocc_dir:
+
+val_obj_dir: /mnt/disk1/rklokov/thingi32/obj
+val_surf_dir: /mnt/disk1/rklokov/thingi32/surf
+val_sdf_dir: /mnt/disk1/rklokov/thingi32/sdf
+val_vgocc_dir:
+
+input_type: sdf
+grid_size:
+  - 32
+v_start: -0.5
+v_end: 0.5
+n_input_pc: 4096
+knn_input: 8
+local_input: True
+pooling_radius: 1
+truncate_sdf: True
+truncation_cell_dist: 2
+sparse_sdf: True
+sample_grid_points: False
+sample_grid_size: 2048
+sample_grid_add_noise: False
+sample_grid_add_noise_scale: 2.0
+sample_gt_pc: False
+n_gt_pc: 100000
+
+### Input point cloud transformations config ###
+cloud_gaussian_noise: False
+cloud_gaussian_noise_scale: 0.01
+
+### Sample transformations config ###
+sample_rescale: True
+sample_rescale_scale: 2.0
+sample_axes_permutation: False
+sample_axes_flip: False
+
+### Data loader config ###
+batch_size: 8
+num_workers: 8
+
+### Feature extractor config ###
+in_dim: 1
+enc_feat_dim:
+  - 64
+  - 128
+  - 128
+  - 256
+
+### VC network config ###
+vcdec_feat_dim: 
+  - 512
+  - 256
+  - 256
+vcdec_in_glob: False
+vcdec_vc_per_query: 1
+vcdec_vc_tanh: False
+vcdec_vc_tanh_scale: 3.0
+vcdec_p_dim: 0
+vcdec_pe: False
+vcdec_pe_feat_dim: 64
+vcdec_film: False
+vcdec_film_std: 0.001
+
+### Optimizer config ###
+n_epochs: 75
+lr: 0.000016
+wd: 0.00001
+beta1: 0.9
+beta2: 0.93
+amsgrad: True

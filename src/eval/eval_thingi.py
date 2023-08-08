@@ -1,5 +1,3 @@
-# WARNING SCALING
-
 import numpy as np
 import os
 from multiprocessing import Process, Queue
