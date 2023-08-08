@@ -34,7 +34,7 @@ The code is tested on the listed versions but other versions may also work:
 
 ## Datasets and pre-trained weights
 
-TODO
+Both ABC and Thingi32 preprocessed datasets are available [here](https://drive.google.com/file/d/1KO4Bhbz7yAlSx_p35rktdWGc7r69uLpw/view?usp=drive_link), as well as pretrained model checkpoints [here](https://drive.google.com/file/d/1Rw06bM-t88azkwoq6NtTVtJ4h7TVpdLs/view?usp=drive_link). Both should be unpacked in the root directory of the project for further use.
 
 ## Direct Optimization
 
@@ -44,8 +44,25 @@ python src/eval.py
 
 
 ## Learning-based reconstruction from SDF input
- 
-TODO
+
+ Training for different input SDF resolutions could be started with:
+./scripts/train_voromesh_32.sh
+./scripts/train_voromesh_64.sh
+./scripts/train_voromesh_32+64.sh
+
+Shape prediction for ABC with different resolution models:
+./evaluate_voromesh_32_32_ABC.sh
+./evaluate_voromesh_64_64_ABC.sh
+./evaluate_voromesh_32+64_32_ABC.sh
+./evaluate_voromesh_32+64_64_ABC.sh
+
+Shape prediction for Thingi32 with different resolution models:
+./evaluate_voromesh_32_32_thingi32.sh
+./evaluate_voromesh_32_64_thingi32.sh
+./evaluate_voromesh_32_128_thingi32.sh
+./evaluate_voromesh_32+64_32_thingi32.sh
+./evaluate_voromesh_32+64_64_thingi32.sh
+./evaluate_voromesh_32+64_128_thingi32.sh
 
 ## Watertight test
 
