@@ -1,20 +1,21 @@
-from networks.vc_decoders import VCDec, VCOccDec
-from networks.sdf_encoders import LocalSDFFE_ME, GlobFeatEnc
-from utils.networks import cnt_params, AverageMeter, save_model
-from datasets.sample_transformation import ComposeSampleTransformation
-from datasets.cloud_transformation import ComposeCloudTransformation
-from datasets.ABCDataset import ABCDataset, abc_collate_fn
-import MinkowskiEngine as ME
+import os
+os.environ['OMP_NUM_THREADS'] = '16'
+import torch
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
-import torch
-from tqdm import tqdm
-from time import time
+import MinkowskiEngine as ME
 import yaml
 import io
 import argparse
-import os
-os.environ['OMP_NUM_THREADS'] = '16'
+from tqdm import tqdm
+from time import time
+
+from datasets.cloud_transformation import ComposeCloudTransformation
+from datasets.sample_transformation import ComposeSampleTransformation
+from datasets.ABCDataset import ABCDataset, abc_collate_fn
+from networks.sdf_encoders import LocalSDFFE_ME, GlobFeatEnc
+from networks.vc_decoders import VCDec, VCOccDec
+from utils.networks import cnt_params, AverageMeter, save_model
 
 
 def define_options_parser():

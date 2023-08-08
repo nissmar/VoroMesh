@@ -1,22 +1,22 @@
-from utils.custom_voronoi import Voroloss_opt, VoronoiValues
-import sys
-from networks.vc_decoders import VCDec
-from networks.sdf_encoders import LocalSDFFE_ME, GlobFeatEnc
-from utils.networks import cnt_params, AverageMeter
-from datasets.sample_transformation import ComposeSampleTransformation
-from datasets.cloud_transformation import ComposeCloudTransformation
-from datasets.ABCDataset import ABCDataset, abc_collate_fn
-import MinkowskiEngine as ME
-from torch.utils.data import DataLoader
+import os
+os.environ['OMP_NUM_THREADS'] = '16'
 import torch
-from tqdm import tqdm
-from time import time
+from torch.utils.data import DataLoader
+import MinkowskiEngine as ME
 import numpy as np
 import yaml
 import io
 import argparse
-import os
-os.environ['OMP_NUM_THREADS'] = '16'
+from tqdm import tqdm
+from time import time
+
+from datasets.cloud_transformation import ComposeCloudTransformation
+from datasets.sample_transformation import ComposeSampleTransformation
+from datasets.ABCDataset import ABCDataset, abc_collate_fn
+from networks.sdf_encoders import LocalSDFFE_ME, GlobFeatEnc
+from networks.vc_decoders import VCDec
+from utils.networks import cnt_params, AverageMeter
+from utils.custom_voronoi import Voroloss_opt, VoronoiValues
 
 
 def define_options_parser():

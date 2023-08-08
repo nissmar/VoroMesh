@@ -117,6 +117,8 @@ class ABCDataset(Dataset):
             self.sdf_files += [os.path.join(sdf_dir + str(gs), Path(i).stem + '.npz') for i in self.surf_files]
             if vgocc_dir is not None:
                 self.vgocc_files += [i for i in sorted(glob(os.path.join(vgocc_dir + str(gs), '*.npz')))]
+            if len(self.vgocc_files) == 0:
+                self.vgocc_dir = None
 
         self.obj_files *= len(grid_size)
         self.surf_files *= len(grid_size)

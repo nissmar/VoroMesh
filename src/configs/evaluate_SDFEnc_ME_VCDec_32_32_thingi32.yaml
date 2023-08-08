@@ -1,17 +1,17 @@
 ### Saving config ###
-path2save: /mnt/disk1/rklokov/code/VoronoiLearning/NeuralNetworks/models/
+path2save: ./weights/
 model_name: SDFEnc_ME_32g_256l_VCDec_0c_256l_0g_1vgpp.pkl
-path2samples: /mnt/disk1/rklokov/code/VoronoiLearning/NeuralNetworks/samples/local_Thingi32_32_32
+path2samples: ./samples/Thingi32_32_32
 
 ### Dataset config ###
-tr_obj_dir: /mnt/disk1/rklokov/thingi32/obj
-tr_surf_dir: /mnt/disk1/rklokov/thingi32/surf
-tr_sdf_dir: /mnt/disk1/rklokov/thingi32/sdf
+tr_obj_dir: ./data/Thingi32/obj
+tr_surf_dir: ./data/Thingi32/surf
+tr_sdf_dir: ./data/Thingi32/sdf
 tr_vgocc_dir:
 
-val_obj_dir: /mnt/disk1/rklokov/thingi32/obj
-val_surf_dir: /mnt/disk1/rklokov/thingi32/surf
-val_sdf_dir: /mnt/disk1/rklokov/thingi32/sdf
+val_obj_dir: ./data/Thingi32/obj
+val_surf_dir: ./data/Thingi32/surf
+val_sdf_dir: ./data/Thingi32/sdf
 val_vgocc_dir:
 
 input_type: sdf

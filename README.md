@@ -11,14 +11,25 @@ PyTorch implementation of the ICCV2023 paper **VoroMesh: Learning Watertight Sur
 
 If you find our work useful in your research, please consider citing:
 
-	@article{Todo,
+	@InProceedings{maruani23iccv,
+	  author    = {N. Maruani and R. Klokov and M. Ovsjanikov and P. Alliez and M. Desbrun},
+	  title     = {VoroMesh: Learning Watertight Surface Meshes with Voronoi Diagrams},
+	  booktitle = {ICCV},
+	  year      = {2023},
 	}
 
 ## Requirements
 
+The code is tested on the listed versions but other versions may also work:
+
 - Python 3.9
-- [PyTorch 1.8](https://pytorch.org/get-started/locally/) (other versions may also work)
-- [CGAL](https://www.cgal.org) (Optional, for fast and accurate VoroMesh extraction)  
+- [PyTorch 1.12.1](https://pytorch.org/get-started/locally/)
+- [PyTorch3D 0.7.0](https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md)
+- [MinkowskiEngine 0.5.4](https://github.com/NVIDIA/MinkowskiEngine#anaconda)
+- [trimesh 3.15.5](https://trimsh.org/install.html)
+- tqdm 4.64.1
+- yaml 0.2.5
+- [CGAL](https://www.cgal.org) (Optional, for fast and accurate VoroMesh extraction)
 
 
 ## Datasets and pre-trained weights

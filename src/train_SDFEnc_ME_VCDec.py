@@ -1,21 +1,22 @@
-from utils.custom_voronoi import Voroloss_opt
-from networks.vc_decoders import VCDec
-from networks.sdf_encoders import LocalSDFFE_ME, GlobFeatEnc
-from utils.networks import cnt_params, AverageMeter, save_model
-from datasets.sample_transformation import ComposeSampleTransformation
-from datasets.cloud_transformation import ComposeCloudTransformation
-from datasets.ABCDataset import ABCDataset, abc_collate_fn
-import MinkowskiEngine as ME
+import os
+os.environ['OMP_NUM_THREADS'] = '16'
+import torch
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
-import torch
-from tqdm import tqdm
-from time import time
+import MinkowskiEngine as ME
 import yaml
 import io
 import argparse
-import os
-os.environ['OMP_NUM_THREADS'] = '16'
+from tqdm import tqdm
+from time import time
+
+from datasets.cloud_transformation import ComposeCloudTransformation
+from datasets.sample_transformation import ComposeSampleTransformation
+from datasets.ABCDataset import ABCDataset, abc_collate_fn
+from networks.sdf_encoders import LocalSDFFE_ME, GlobFeatEnc
+from networks.vc_decoders import VCDec
+from utils.networks import cnt_params, AverageMeter, save_model
+from utils.custom_voronoi import Voroloss_opt
 
 
 def define_options_parser():
@@ -23,15 +24,15 @@ def define_options_parser():
         description='Model training script. Provide a suitable config.')
     parser.add_argument('config', type=str,
                         help='Path to config file in YAML format.')
-    parger.add_argument('--reg_w', type=float, default=1.0,
+    parser.add_argument('--reg_w', type=float, default=1.0,
                         help='Max offset regularization weight.')
-    parger.add_argument('--n_epochs', type=int, default=100,
+    parser.add_argument('--n_epochs', type=int, default=100,
                         help='Number of training epochs.')
-    parger.add_argument('--lr', type=float,
+    parser.add_argument('--lr', type=float,
                         default=0.000256, help='Learning rate.')
-    parger.add_argument('--beta2', type=float, default=0.99,
+    parser.add_argument('--beta2', type=float, default=0.99,
                         help='Second moment weihght in adam optimizer.')
-    parser.add_argument('--gpu', type=int, default=0, help='GPU index.')
+    parser.add_argument('--gpu', type=int, default=1, help='GPU index.')
     parser.add_argument('--resume', action='store_true',
                         help='Flag signaling if training is resumed from a checkpoint.')
     parser.add_argument('--resume_optimizer', action='store_true',

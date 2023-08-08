@@ -1,20 +1,20 @@
 ### Saving config ###
-path2save: /mnt/disk1/rklokov/code/VoronoiLearning/NeuralNetworks/models/
+path2save: ./weights/
 model_name: SDFEnc_ME_32+64g_256l_VCDec_0c_256l_0g_1vgpp.pkl
 
 ### Dataset config ###
-tr_obj_dir: /mnt/disk1/rklokov/ABC/sampleABC/Tr/obj
-tr_surf_dir: /mnt/disk1/rklokov/ABC/sampleABC/Tr/surf
-tr_sdf_dir: /mnt/disk1/rklokov/ABC/sampleABC/Tr/sdf
-tr_vgocc_dir: /mnt/disk1/rklokov/ABC/sampleABC/Tr/vgoccloc
+tr_obj_dir: ./data/ABC/train/obj
+tr_surf_dir: ./data/ABC/train/surf
+tr_sdf_dir: ./data/ABC/train/sdf
+tr_vgocc_dir: ./data/ABC/train/vgocc
 
-val_obj_dir: /mnt/disk1/rklokov/ABC/sampleABC/Val/obj
-val_surf_dir: /mnt/disk1/rklokov/ABC/sampleABC/Val/surf
-val_sdf_dir: /mnt/disk1/rklokov/ABC/sampleABC/Val/sdf
-val_vgocc_dir: /mnt/disk1/rklokov/ABC/sampleABC/Val/vgoccloc
+val_obj_dir: ./data/ABC/val/obj
+val_surf_dir: ./data/ABC/val/surf
+val_sdf_dir: ./data/ABC/val/sdf
+val_vgocc_dir: ./data/ABC/val/vgocc
 
 input_type: sdf
-grid_size: 
+grid_size:
   - 32
   - 64
 v_start: -0.5
