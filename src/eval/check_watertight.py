@@ -2,6 +2,7 @@ import os
 import igl
 import trimesh
 import argparse
+from tqdm import tqdm
 try:
     import sys
     sys.path.append("./src/cpp_utils/build/")
@@ -24,7 +25,7 @@ def evaluate(src_dir):
     empty = 0
     watertight = 0
     num_models = 0
-    for model_name in os.listdir(src_dir):
+    for model_name in tqdm(os.listdir(src_dir)):
         if (".obj" in model_name or ".off" in model_name) and not (model_name[0] == '.' or '96481' in model_name or '58168' in model_name):
             num_models += 1
             v, f = igl.read_triangle_mesh(src_dir + model_name)

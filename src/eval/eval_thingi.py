@@ -5,9 +5,13 @@ import queue
 import time
 import trimesh
 from sklearn.neighbors import KDTree
+import sys
+sys.path.append("./src/utils/")
+from mesh_tools import NDCnormalize
+
 
 sample_num = 100000
-gt_dir = "/data/nmaruani/RESULTS/models_NDC_norm/GT_thingi/"  # groundtruth files
+gt_dir = "./data/Thingi32/obj/"  # groundtruth files
 all_models = "src/eval/watertight_thingi32_obj_list.txt"
 results_path = "src/eval/result_thingi.txt"
 pred_dirs = "out/"  # voromesh (direct optimization)
@@ -28,8 +32,7 @@ def get_cd_nc_f1_ecd_ef1(q, name_list):
 
         # load gt
         gt_mesh = trimesh.load(gt_obj_name)
-        gt_mesh.vertices[:] /= 2
-
+        gt_mesh.vertices[:] = NDCnormalize(gt_mesh.vertices)
         gt_points, gt_indexs = gt_mesh.sample(sample_num, return_index=True)
         gt_normals = gt_mesh.face_normals[gt_indexs]
         # load pred
