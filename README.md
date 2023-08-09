@@ -29,16 +29,25 @@ If the C++ utilities are not compiled, the code will still run but the output sh
 
 ## Direct Optimization
 
+Our optimized models can be downloaded [here](https://drive.google.com/file/d/1XbiEPSMEwGFW4zxkvoXf9Vz78cSzoPny/view?usp=drive_link).
+
 To fit a VoroMesh to a single shape:
 
 ```
 python src/single_voromesh.py ./data/bunny.stl
 ```
 
-To evaluate on the Thingi32 dataset:
+To process the Thingi32 dataset with resolutions 32, 64 and 128:
 
 ```
 python src/batch_voromesh.py
+```
+
+To compute the relevant metrics:
+
+```
+python src/eval/eval_thingi.py
+python src/eval/gather_thingi.py
 ```
 
 
