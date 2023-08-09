@@ -182,7 +182,6 @@ def export_obj(nv: np.ndarray, nf: np.ndarray, name: str):
         file = open(name, "x")
     except:
         file = open(name, "w")
-    file.write("o {} \n".format(name))
     for e in nv:
         file.write("v {} {} {}\n".format(*e))
     file.write("\n")

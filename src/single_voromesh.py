@@ -72,11 +72,4 @@ if __name__ == '__main__':
     print("Exporting VoroMesh...")
 
     # precise mesh extraction using CGAL
-    if os.path.isfile('src/cpp_utils/build/voromesh'):
-        mt.export_vmesh(V.points.cpu().detach().numpy(),
-                        V.values.cpu().detach().numpy(), args.output_name)
-        os.system(
-            'src/cpp_utils/build/voromesh {}.vmesh {}.obj'.format(args.output_name, args.output_name))
-    else:
-        print('WARNING: CGAL voromesh not found, using scipy mesh extraction with NO WATERTIGHTNESS GUARANTEES. Please compile cpp_utils.')
-        mt.export_obj(*V.to_mesh(), args.output_name)
+    mt.export_obj(*V.to_mesh(), args.output_name)

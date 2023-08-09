@@ -5,6 +5,15 @@ import numpy as np
 import igl
 from scipy.spatial import Voronoi
 from pytorch3d.ops import knn_points, knn_gather
+import sys
+
+try:
+    sys.path.append("./src/cpp_utils/build/")
+    from VoroMeshUtils import compute_voromesh, self_intersect
+    CPP_COMPILED = True
+except:
+    print('WARNING: CGAL voromesh not found, using scipy mesh extraction with NO WATERTIGHTNESS GUARANTEES. Please compile cpp_utils.')
+    CPP_COMPILED = False
 
 SIGNS = np.array(
     [
@@ -95,19 +104,24 @@ def voronoi_to_mesh(
     vpoints: np.ndarray, interior_cells: np.ndarray, clip=True, return_errors=False
 ):
     """computes mesh from voronoi centers marked as inside or outside, with optional clip in [-1, 1]^3"""
-
-    nvertices, faces, is_erronious = voronoi_to_poly_mesh(
-        vpoints, interior_cells, clip)
-
-    nfaces = []
-    for face in faces:
-        for i in range(2, len(face)):
-            nfaces.append([face[0], face[i - 1], face[i]])
-
-    if return_errors:
-        return nvertices, np.array(nfaces), is_erronious
+    if CPP_COMPILED:
+        vpoints = vpoints.astype(np.double)
+        interior_cells = (interior_cells-.5).astype(np.double)
+        nvertices, nfaces = compute_voromesh(vpoints, interior_cells)
+        return nvertices, nfaces
     else:
-        return nvertices, np.array(nfaces)
+        nvertices, faces, is_erronious = voronoi_to_poly_mesh(
+            vpoints, interior_cells, clip)
+
+        nfaces = []
+        for face in faces:
+            for i in range(2, len(face)):
+                nfaces.append([face[0], face[i - 1], face[i]])
+
+        if return_errors:
+            return nvertices, np.array(nfaces), is_erronious
+        else:
+            return nvertices, np.array(nfaces)
 
 
 def abs_max(t, t2):

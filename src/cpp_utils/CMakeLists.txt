@@ -1,28 +1,18 @@
-cmake_minimum_required(VERSION 3.1...3.15)
-project(voxeloffset LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.10)
 
-set (CMAKE_CXX_STANDARD 17)
-set (CMAKE_CXX_STANDARD_REQUIRED True)
+project(VoroMeshUtils)
+set(CMAKE_CXX_STANDARD 20)
+#set(CMAKE_OSX_ARCHITECTURES "x86_64") # for compilation on mac
 set(CMAKE_BUILD_TYPE "Release")
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(PYBIND11_PYTHON_VERSION 3.6)
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -fPIC -lmpfr -lgmp")
 
-# Instruct CMake to run moc automatically when needed.
-if(NOT POLICY CMP0070 AND POLICY CMP0053)
-  # Only set CMP0053 to OLD with CMake<3.10, otherwise there is a warning.
-  cmake_policy(SET CMP0053 OLD)
-endif()
-if(POLICY CMP0071)
-  cmake_policy(SET CMP0071 NEW)
-endif()
-
-include(CMakeDependentOption)
-
-# Find CGAL
+find_package(pybind11 REQUIRED)
+find_package(Eigen3 REQUIRED)
 find_package(CGAL REQUIRED)
 
-add_executable(self_intersect self_intersect.cpp)
-target_link_libraries(self_intersect PRIVATE CGAL::CGAL)
+pybind11_add_module(${PROJECT_NAME} pywrap.cpp)
 
-add_executable(voromesh voromesh.cpp)
-target_link_libraries(voromesh PRIVATE CGAL::CGAL)
+target_compile_definitions(${PROJECT_NAME} PRIVATE VERSION_INFO=${EXAMPLE_VERSION_INFO})
+target_include_directories(${PROJECT_NAME} PRIVATE ${PYBIND11_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} PRIVATE Eigen3::Eigen)

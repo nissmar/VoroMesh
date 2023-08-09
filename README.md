@@ -80,7 +80,7 @@ To evaluate our pretrained models on Thingi32 with different resolutions:
 To check for watertightness:
 
 ```
-python src/eval/check_watertight.py ./data/
+python src/eval/check_watertight.py ./out/direct_voromesh_32
 ```
 
 
