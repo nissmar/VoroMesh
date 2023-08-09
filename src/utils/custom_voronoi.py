@@ -106,6 +106,7 @@ def voronoi_to_mesh(
     """computes mesh from voronoi centers marked as inside or outside, with optional clip in [-1, 1]^3"""
     if CPP_COMPILED:
         vpoints = vpoints.astype(np.double)
+        vpoints += np.random.randn(*vpoints.shape) * 1e-7
         interior_cells = (interior_cells-.5).astype(np.double)
         nvertices, nfaces = compute_voromesh(vpoints, interior_cells)
         return nvertices, nfaces

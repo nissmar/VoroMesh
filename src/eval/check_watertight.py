@@ -2,6 +2,12 @@ import os
 import igl
 import trimesh
 import argparse
+try:
+    import sys
+    sys.path.append("./src/cpp_utils/build/")
+    from VoroMeshUtils import self_intersect
+except:
+    print('WARNING: no utilities found. Please compile cpp_utils.')
 
 
 def define_options_parser():
@@ -24,8 +30,7 @@ def evaluate(src_dir):
             v, f = igl.read_triangle_mesh(src_dir + model_name)
             if len(v) > 0:
                 wt = not trimesh.Trimesh(v, f, process=False).is_watertight
-                wg = int(
-                    os.popen("src/cpp_utils/build/self_intersect {}".format(src_dir+model_name)).read()[:-1])
+                wg = self_intersect(src_dir+model_name)
                 if wt:
                     wrong_topology += 1
                 if wg > 0:
