@@ -1,6 +1,15 @@
 import os
 import igl
 import trimesh
+import argparse
+
+
+def define_options_parser():
+    parser = argparse.ArgumentParser(
+        description='Test watertightness of the output shapes.')
+    parser.add_argument('voromesh_dir', type=str,
+                        help='path to input voromeshes')
+    return parser
 
 
 def evaluate(src_dir):
@@ -15,8 +24,6 @@ def evaluate(src_dir):
             v, f = igl.read_triangle_mesh(src_dir + model_name)
             if len(v) > 0:
                 wt = not trimesh.Trimesh(v, f, process=False).is_watertight
-                # os.system(
-                #     "src/cpp_utils/build/self_intersect {}".format(src_dir+model_name))
                 wg = int(
                     os.popen("src/cpp_utils/build/self_intersect {}".format(src_dir+model_name)).read()[:-1])
                 if wt:
@@ -30,7 +37,12 @@ def evaluate(src_dir):
     return (wrong_geometry, wrong_topology, empty, watertight / num_models)
 
 
-print('name, wrong geometry, wrong topology, empty models, percentage of watertight models')
-for directory in os.listdir('out'):
-    this = 'out/{}/'.format(directory)
-    print(this, evaluate(this))
+if __name__ == '__main__':
+    parser = define_options_parser()
+    args = parser.parse_args()
+    scores = evaluate(args.voromesh_dir+'/')
+    print(args.voromesh_dir)
+    print('Percentage of watertight meshes: {}%'.format(scores[3]*100))
+    print('Self-intersecting models: {}'.format(scores[0]))
+    print('Non-closed models: {}'.format(scores[1]))
+    print('Empty models: {}'.format(scores[2]))
