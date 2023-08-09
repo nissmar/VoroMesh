@@ -44,7 +44,7 @@ python src/batch_voromesh.py
 
 ## Datasets and pre-trained weights
 
-Both ABC and Thingi32 preprocessed datasets are available [here](https://drive.google.com/file/d/1KO4Bhbz7yAlSx_p35rktdWGc7r69uLpw/view?usp=drive_link), as well as pretrained model checkpoints [here](https://drive.google.com/file/d/1Rw06bM-t88azkwoq6NtTVtJ4h7TVpdLs/view?usp=drive_link). Both should be unpacked in the root directory of the project for further use.
+Preprocessed datasets [ABC](https://drive.google.com/file/d/1YwF-iUfvKTRaR1ZNyQ_TX2IIN597LeGK/view?usp=drive_link) (10.4 Gb) and [Thingi32](https://drive.google.com/file/d/1V77k18e8yQpyzvmBIhtpZIXNfPpi6Zmg/view?usp=drive_link) (0.7 Gb) should be unpacked in the `./data` directory, pretrained model [checkpoints](https://drive.google.com/file/d/1Rw06bM-t88azkwoq6NtTVtJ4h7TVpdLs/view?usp=drive_link) (0.4 Gb) - in the `./` directory of the project.
 
 
 
