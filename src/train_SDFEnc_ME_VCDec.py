@@ -32,7 +32,7 @@ def define_options_parser():
                         default=0.000256, help='Learning rate.')
     parser.add_argument('--beta2', type=float, default=0.99,
                         help='Second moment weihght in adam optimizer.')
-    parser.add_argument('--gpu', type=int, default=1, help='GPU index.')
+    parser.add_argument('--gpu', type=int, default=0, help='GPU index.')
     parser.add_argument('--resume', action='store_true',
                         help='Flag signaling if training is resumed from a checkpoint.')
     parser.add_argument('--resume_optimizer', action='store_true',
