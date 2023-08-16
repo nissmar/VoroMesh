@@ -12,6 +12,7 @@ for grid_n in [32, 64, 128]:
     out_dir = "out/direct_voromesh_{}/".format(grid_n)
     T0 = time()
     opt_time = 0
+    extract_time = 0
 
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
@@ -25,8 +26,10 @@ for grid_n in [32, 64, 128]:
         # export .pt pytorch file
         # torch.save(
         #     V, 'voronois/batch_voronoi_{}_NDC_norm/voronoi_{}.pt'.format(grid_n, model_name[:-4]))
+        t1 = time()
+        nv, nf = V.to_mesh()
+        extract_time += time()-t1
+        mt.export_obj(nv, nf, '{}/{}'.format(out_dir, model_name[:-4]))
 
-        mt.export_obj(
-            *V.to_mesh(), '{}/{}'.format(out_dir, model_name[:-4]))
-
-    print('TOTAL TIME: {}, OPT_TIME: {}'.format(time()-T0, opt_time))
+    print('TOTAL TIME: {}, OPT_TIME: {}, EXTRACT_TIME: {}'.format(
+        time()-T0, opt_time, extract_time))
