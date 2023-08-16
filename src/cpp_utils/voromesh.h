@@ -62,7 +62,7 @@ Point exact_dual(Cell_handle cell)
 }
 
 std::pair<Eigen::MatrixXd, Eigen::MatrixXi> compute_voromesh(py::array in_points, py::array in_values)
-{ 
+{
     py::buffer_info info = in_points.request();
     auto ptr = static_cast<double *>(info.ptr);
 

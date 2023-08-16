@@ -17,6 +17,7 @@ The code is tested on the listed versions but other versions may also work:
 - [PyTorch3D 0.7.0](https://github.com/facebookresearch/pytorch3d/blob/main/INSTALL.md)
 - [MinkowskiEngine 0.5.4](https://github.com/NVIDIA/MinkowskiEngine#anaconda)
 - [trimesh 3.15.5](https://trimsh.org/install.html)
+- igl 2.2.1
 - tqdm 4.64.1
 - yaml 0.2.5
 - [CGAL](https://www.cgal.org) (Optional, for fast and accurate VoroMesh extraction)

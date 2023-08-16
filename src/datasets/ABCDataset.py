@@ -248,7 +248,7 @@ class ABCDataset(Dataset):
             sample['gt_vg_occ'] = np.load(vgocc_npz)['gt_occ'].astype(np.int64)
 
         if self.input_type == 'sdf':
-            sample['input_gs'] = np.array(cur_gs, dtype=np.int)
+            sample['input_gs'] = np.array(cur_gs, dtype=np.int32)
 
             grid_xyz = np.stack(np.meshgrid(
                 np.linspace(self.v_start, self.v_end, num=cur_gs + 1),
