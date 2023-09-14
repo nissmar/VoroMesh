@@ -5,32 +5,28 @@ from sklearn.neighbors import KDTree
 from tqdm import tqdm
 import argparse
 
+
 sample_num = 100000
-all_models = "src/eval/abc_ordered.txt"
-nw_list = 'src/eval/not_watertight_ABC_test.txt'
+all_models = "src/eval/thingi32_names.txt"
 f1_threshold = 0.003
 
 
-def get_cd_f1_nc(name):
+def get_cd_f1_nc(name, rescale, sample_num, f1_threshold):
     idx = name[0]
     gt_obj_name = name[1]
     pred_obj_name = name[2]
 
     # load gt
     gt_mesh = trimesh.load(gt_obj_name)
-
     gt_points, gt_indexs = gt_mesh.sample(sample_num, return_index=True)
     gt_normals = gt_mesh.face_normals[gt_indexs]
     # load pred
     pred_mesh = trimesh.load(pred_obj_name)
-    try:
-        pred_points, pred_indexs = pred_mesh.sample(
-            sample_num, return_index=True)
-        pred_normals = pred_mesh.face_normals[pred_indexs]
-    except:
-        print('\n\n\n WARNING \n\n\n')
-        pred_points = np.zeros((1, 3))
-        pred_normals = np.zeros((1, 3))
+    pred_mesh.vertices[:] /= rescale
+
+    pred_points, pred_indexs = pred_mesh.sample(
+        sample_num, return_index=True)
+    pred_normals = pred_mesh.face_normals[pred_indexs]
 
     # cd and nc and f1
 
@@ -63,51 +59,46 @@ def get_cd_f1_nc(name):
         f1 = 2 * recall * precision / (recall + precision)
     else:
         f1 = 0
-
-    # write_ply_point("temp/"+str(idx)+"_gt.ply", gt_edge_points)
-    # write_ply_point("temp/"+str(idx)+"_pred.ply", pred_edge_points)
-
-    # ecd ef1
-
-    # print(idx, cd1, cd2, nc, f1)
     return idx, cd1, cd2, f1, nc
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='Evaluation on ABC dataset')
-    parser.add_argument('pred_dir', type=str, help='Path to .obj shapes')
-    parser.add_argument('-gt_dir', type=str, default="data/ABC/val/obj/",
-                        help='Path to .obj groundtruth shapes')
 
+    parser = argparse.ArgumentParser(
+        description='Evaluation on Thingi32 dataset')
+    parser.add_argument('pred_dir', type=str, help='Path to .obj shapes')
+
+    parser.add_argument('-formatted', type=bool,
+                        default=False, help='for name formatting')
+    parser.add_argument('-gt_dir', type=str, default="data/Thingi32/obj/",
+                        help='Path to .obj groundtruth shapes')
     args = parser.parse_args()
 
-    fin = open(nw_list, 'r')
-    nw = [name.strip()[:-5] for name in fin.readlines()]
-    fin.close()
-
     fin = open(all_models, 'r')
-    obj_names = [name.strip()[:-5] for name in fin.readlines()]
-    obj_names_old = obj_names[int(len(obj_names)*0.8):]
-    obj_names = [e for e in obj_names_old if not (e in nw)]
+    obj_names = [name.strip() for name in fin.readlines()]
     fin.close()
 
     obj_names_len = len(obj_names)
 
     # prepare list of names
     list_of_list_of_names = []
-    true_idx = 0
-    for idx in range(len(obj_names_old)):
-        if not obj_names_old[idx] in nw:
-            gt_obj_name = "{}/{}.obj".format(args.gt_dir, obj_names_old[idx])
-            pred_obj_name = "{}/test_{}.obj".format(args.pred_dir, idx)
+    for idx in range(len(obj_names)):
+        if not (obj_names[idx] in ["96481", "58168"]):
+            gt_obj_name = args.gt_dir + obj_names[idx] + ".obj"
+            if args.formatted:
+                pred_obj_name = "{}/test_{}.obj".format(args.pred_dir, idx)
+            else:
+                pred_obj_name = "{}/{}.obj".format(
+                    args.pred_dir, obj_names[idx])
             list_of_list_of_names.append(
                 [idx, gt_obj_name, pred_obj_name])
-            true_idx += 1
 
+    rescale = 1 if args.formatted else 2
     out = joblib.Parallel(n_jobs=-1)(joblib.delayed(get_cd_f1_nc)
-                                     (name) for name in tqdm(list_of_list_of_names))
+                                     (name, rescale, sample_num, f1_threshold) for name in tqdm(list_of_list_of_names))
     out = np.array(out)
+
     mean_scores = out.mean(0)
+    print(args.pred_dir)
     print('CD (x 1e-5): {:.3f}  &  F1: {:.3f}  &  NC: {:.3f}'.format(
         mean_scores[2]*1e5, mean_scores[3], mean_scores[4]))

@@ -47,8 +47,9 @@ python src/batch_voromesh.py
 To compute the relevant metrics:
 
 ```
-python src/eval/eval_thingi.py
-python src/eval/gather_thingi.py
+python src/eval/eval_THINGI.py out/direct_voromesh_32/
+python src/eval/eval_THINGI.py out/direct_voromesh_64/
+python src/eval/eval_THINGI.py out/direct_voromesh_128/
 ```
 
 
@@ -69,6 +70,14 @@ To evaluate our pretrained models on ABC with different resolutions:
 ./scripts/evaluate_voromesh_32+64_64_ABC.sh
 ```
 
+To compute the relevant metrics:
+```
+python src/eval/eval_ABC.py samples/ABC_32_32
+python src/eval/eval_ABC.py samples/ABC_64_64
+python src/eval/eval_ABC.py samples/ABC_32+64_32
+python src/eval/eval_ABC.py samples/ABC_32+64_64
+```
+
 To evaluate our pretrained models on Thingi32 with different resolutions:
 ```
 ./scripts/evaluate_voromesh_32_32_thingi32.sh
@@ -77,6 +86,17 @@ To evaluate our pretrained models on Thingi32 with different resolutions:
 ./scripts/evaluate_voromesh_32+64_32_thingi32.sh
 ./scripts/evaluate_voromesh_32+64_64_thingi32.sh
 ./scripts/evaluate_voromesh_32+64_128_thingi32.sh
+```
+
+
+To compute the relevant metrics:
+```
+python src/eval/eval_THINGI.py samples/Thingi32_32 -formatted 1
+python src/eval/eval_THINGI.py samples/Thingi32_64 -formatted 1
+python src/eval/eval_THINGI.py samples/Thingi32_128 -formatted 1
+python src/eval/eval_THINGI.py samples/Thingi32_32+64_32 -formatted 1
+python src/eval/eval_THINGI.py samples/Thingi32_32+64_64 -formatted 1
+python src/eval/eval_THINGI.py samples/Thingi32_32+64_128 -formatted 1
 ```
 
  To train with different input SDF resolutions:
@@ -90,7 +110,7 @@ To evaluate our pretrained models on Thingi32 with different resolutions:
 To check for watertightness:
 
 ```
-python src/eval/check_watertight.py ./out/direct_voromesh_32
+python src/eval/check_watertight.py out/direct_voromesh_32
 ```
 
 
