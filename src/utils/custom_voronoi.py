@@ -155,7 +155,8 @@ def get_clean_shape(V, sdf, mask_scale=2, grid_s=65):
             interior_cells[i] = False
         else:
             r_sdf = pv_sdf[reg_vertices]
-            is_out = (r_sdf > mask_scale * 2 / grid_s).sum()
+            is_out = (r_sdf > mask_scale * 2 /
+                      grid_s).sum() or (np.abs(pv.vertices[reg_vertices]) > 1).any()
             is_in = (r_sdf < -mask_scale * 2 / grid_s).sum()
             if is_out and is_in:
                 warning = True
