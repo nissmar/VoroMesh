@@ -78,9 +78,8 @@ def evaluate_and_reconstruct(dataset, iterator):
         input_sparse_xyz = batch['input_sparse_xyz'].to(device)
         input_sparse_sdf = (
             batch['input_sparse_sdf'].to(device) *
-            torch.repeat_interleave(batch['input_gs'].to(device) / 32.,
-                                    batch['input_sparse_sdf_idx_size'].to(
-                                        device),
+            torch.repeat_interleave(batch['input_gs'].to(device) / config['grid_size'][0],
+                                    batch['input_sparse_sdf_idx_size'].to(device),
                                     dim=0)
         ).unsqueeze(1)
         input_sparse_sdf_idx = batch['input_sparse_sdf_idx'].to(device).int()
@@ -92,24 +91,25 @@ def evaluate_and_reconstruct(dataset, iterator):
                 grid_features.features,
                 query=input_sparse_xyz,
                 g_features=torch.repeat_interleave(glob_encoder(maxpooler(grid_features).features),
-                                                   batch['input_sparse_sdf_idx_size'].to(
-                                                       device),
+                                                   batch['input_sparse_sdf_idx_size'].to(device),
                                                    dim=0)
             )
         elif config['vcdec_in_glob']:
             vc = vcdec(
                 grid_features.features,
                 g_features=torch.repeat_interleave(glob_encoder(maxpooler(grid_features).features),
-                                                   batch['input_sparse_sdf_idx_size'].to(
-                                                       device),
+                                                   batch['input_sparse_sdf_idx_size'].to(device),
                                                    dim=0)
             )
         elif config['vcdec_p_dim']:
             vc = vcdec(grid_features.features, query=input_sparse_xyz)
         else:
             vc = vcdec(grid_features.features)
-        vc /= torch.repeat_interleave(batch['input_gs'].to(
-            device), batch['input_sparse_sdf_idx_size'].to(device), dim=0).unsqueeze(1)
+        vc /= torch.repeat_interleave(
+            batch['input_gs'].to(device),
+            batch['input_sparse_sdf_idx_size'].to(device), 
+            dim=0
+        ).unsqueeze(1)
 
         if config['vcdec_vc_tanh']:
             vc *= config['vcdec_vc_tanh_scale']
@@ -120,16 +120,14 @@ def evaluate_and_reconstruct(dataset, iterator):
             vc_occ = occdec(
                 grid_features.features, query=vc,
                 g_features=torch.repeat_interleave(glob_encoder(maxpooler(grid_features).features),
-                                                   batch['input_sparse_sdf_idx_size'].to(
-                                                       device),
+                                                   batch['input_sparse_sdf_idx_size'].to(device),
                                                    dim=0)
             )
         elif config['vcdec_in_glob']:
             vc_occ = occdec(
                 grid_features.features,
                 g_features=torch.repeat_interleave(glob_encoder(maxpooler(grid_features).features),
-                                                   batch['input_sparse_sdf_idx_size'].to(
-                                                       device),
+                                                   batch['input_sparse_sdf_idx_size'].to(device),
                                                    dim=0)
             )
         elif config['vcdec_p_dim']:
@@ -153,11 +151,9 @@ def evaluate_and_reconstruct(dataset, iterator):
             vl += voroloss(gt_clouds[j].unsqueeze(0), vcj.unsqueeze(0)).sum()
             l += batch['input_sparse_sdf_idx_size'][j]
 
-            vvj = VoronoiValues(vcj.cpu().numpy(), torch.argmax(
-                vcj_occ, dim=1).cpu().numpy())
+            vvj = VoronoiValues(vcj.cpu().numpy(), torch.argmax(vcj_occ, dim=1).cpu().numpy())
             vvj.clean_useless_generators()
-            torch.save(
-                vvj, '{}/test_{}.pt'.format(config['path2samples'], obj_ind + j))
+            torch.save(vvj, '{}/test_{}.pt'.format(config['path2samples'], obj_ind + j))
             # voro_v, voro_f, voro_err = vvj.to_mesh(return_errors=True)
             voro_v, voro_f = get_clean_shape(vvj, batch['input_sdf'][j, 0].numpy(),
                                              mask_scale=2, grid_s=batch['input_gs'][j].numpy() + 1)
@@ -167,8 +163,7 @@ def evaluate_and_reconstruct(dataset, iterator):
             if config['sample_rescale']:
                 voro_v /= config['sample_rescale_scale']
 
-            export_obj(
-                voro_v, voro_f, '{}/test_{}'.format(config['path2samples'], obj_ind + j))
+            export_obj(voro_v, voro_f, '{}/test_{}'.format(config['path2samples'], obj_ind + j))
         vl /= len(batch['input_sparse_sdf_idx_size'])
 
         batch_time.update(time() - end)
